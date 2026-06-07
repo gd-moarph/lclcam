@@ -33,14 +33,6 @@ LCLCam lets you scan a QR code with your phone and use that phone camera as a li
 
 ![Projects and demos](public/assets/projects-demos.png)
 
-### OBS Tutorial
-
-![OBS tutorial](public/assets/tutorial-obs.png)
-
-### Video Calls Tutorial
-
-![Video calls tutorial](public/assets/tutorial-videocalls.png)
-
 ## Requirements
 
 - Node.js 20 or newer
