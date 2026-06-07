@@ -19,21 +19,6 @@ LCLCam lets you scan a QR code with your phone and use that phone camera as a li
 - Tracks in-memory session history during the running process
 - Includes OBS and video-call tutorial pages
 
-## What this standalone version does not include
-
-This standalone build intentionally has no:
-
-- Accounts
-- Login or registration
-- Password reset
-- Clerk integration
-- PostgreSQL requirement
-- Email provider requirement
-- Payment, donation, subscription, or Pro plan logic
-- Cloud video relay
-
-Everything is plain local Studio functionality.
-
 ## Screenshots and visual assets
 
 ### Streaming Angles
