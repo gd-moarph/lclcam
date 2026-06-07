@@ -1,0 +1,265 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LCLCam - Studio</title>
+    <meta name="description" content="Use Phone Camera on Desktop for Free">
+    <meta property="og:title" content="LCLCam - Studio">
+    <meta property="og:description" content="Use Phone Camera on Desktop for Free">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/assets/lclcam-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/lclcam-og.png">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css">
+  </head>
+  <body class="dashboard-page">
+    <aside class="sidebar">
+      <a class="brand-block" href="/studio" aria-label="LCLCam Studio">
+        <img src="/assets/lclcam-logo.png" alt="LCLCam">
+        <strong>Studio</strong>
+      </a>
+      <nav class="side-nav" aria-label="Dashboard navigation">
+        <a href="/studio" data-nav="dashboard">Dashboard</a>
+        <div class="nav-separator">Connections</div>
+        <a href="/studio/phones" data-nav="phones">Phones Linked</a>
+        <a href="/studio/history" data-nav="history" id="historyLink">History Sessions</a>
+        <div class="nav-separator">Tutorials</div>
+        <a href="/studio/obs" data-nav="obs">Tutorial for OBS</a>
+        <a href="/studio/videocalls" data-nav="videocalls">Tutorial for Discord & Slack</a>
+        
+      </nav>
+      <div class="sidebar-footer">
+        <span class="sidebar-note">Local open-source build</span>
+      </div>
+    </aside>
+
+    <main class="studio-main">
+      <header class="studio-header">
+        <div>
+          <p class="eyebrow">Local network mode</p>
+          <h1>Camera workspace</h1>
+          <p class="hint">Use phones on the same Wi-Fi as low-latency camera angles for streaming, calls, and projects.</p>
+        </div>
+        <div class="status-row compact">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="statusText">Connecting viewer</span>
+        </div>
+      </header>
+
+      <section class="studio-page" data-page="dashboard">
+      <section class="workspace-grid">
+        <div class="dashboard-side">
+        <article class="action-card create-card">
+          <div>
+            <p class="eyebrow">New angle</p>
+            <h2>Create new connection</h2>
+            <p class="hint">Generate a QR code, scan it with a phone, and keep both devices on the same Wi-Fi.</p>
+          </div>
+          <button id="newQrButton" type="button">Create QR code</button>
+        </article>
+
+        <article id="phoneDetailsCard" class="info-card">
+          <p class="eyebrow">Phone details</p>
+          <h2 id="detailName">No phone connected</h2>
+          <dl class="details-list">
+            <div><dt>Status</dt><dd id="detailStatus">Disconnected</dd></div>
+            <div><dt>Resolution</dt><dd id="detailResolution">-</dd></div>
+            <div><dt>Runtime</dt><dd id="detailRuntime">00:00</dd></div>
+          </dl>
+        </article>
+
+        <article class="info-card">
+          <p class="eyebrow">Output</p>
+          <h2>Connect camera</h2>
+          <div class="button-stack">
+            <a class="action-link" href="/studio/obs">Connect to OBS</a>
+            <a class="action-link secondary" href="/studio/videocalls">Connect to Discord</a>
+          </div>
+          <p class="hint">Each linked device has its own Camera URL. When you create a new connection, update the OBS Browser Source URL to that camera's URL.</p>
+        </article>
+
+        <article class="info-card stats-card">
+          <p class="eyebrow">Statistics</p>
+          <h2>Session stats</h2>
+          <dl class="details-list">
+            <div><dt>Active phones</dt><dd id="statPhones">0</dd></div>
+            <div><dt>Edition</dt><dd id="statPlan">Open Source</dd></div>
+            <div><dt>Connection layer</dt><dd>Secure pairing</dd></div>
+            <div><dt>Video path</dt><dd>Local WebRTC</dd></div>
+          </dl>
+        </article>
+        </div>
+
+        <section id="cameraGrid" class="camera-grid studio-cameras">
+          <div id="emptyState" class="empty-state">
+            <h3>No active camera</h3>
+            <p>Start by creating a connection and scanning the QR code.</p>
+          </div>
+        </section>
+      </section>
+      </section>
+
+      <section class="studio-page" data-page="phones">
+        <div class="content-panel">
+          <p class="eyebrow">Connections</p>
+          <h1>Phones Linked</h1>
+          <p class="hint">Connected phones appear here with their live status, selected name, resolution, runtime, and quick access to the camera URL.</p>
+          <div id="phonesList" class="list-panel"></div>
+        </div>
+      </section>
+
+      <section class="studio-page" data-page="history">
+        <div class="content-panel">
+          <p class="eyebrow">History</p>
+          <h1>History Sessions</h1>
+          <p class="hint">Review recent local camera sessions, device names, runtime, and captured resolution.</p>
+          <div id="historyPageList" class="history-list"></div>
+        </div>
+      </section>
+
+      <section class="studio-page" data-page="obs">
+        <div class="content-panel tutorial-panel">
+          <p class="eyebrow">Tutorial</p>
+          <h1>Use LCLCam in OBS</h1>
+          <img class="tutorial-hero-image" src="/assets/tutorial-obs.png" alt="OBS setup tutorial with phone camera and browser source">
+          <ol class="guide-list">
+            <li>Create a connection and wait for the phone camera to appear in Studio.</li>
+            <li>Copy the Camera URL from the camera card.</li>
+            <li>In OBS, add a Browser Source and paste the Camera URL.</li>
+            <li>Set Browser Source width and height to match the phone camera. For 1080p, use width 1920 and height 1080.</li>
+            <li>Use OBS Virtual Camera if you want the phone camera inside Discord, Slack, Zoom, or similar apps.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="studio-page" data-page="videocalls">
+        <div class="content-panel tutorial-panel">
+          <p class="eyebrow">Tutorial</p>
+          <h1>Use LCLCam in Discord & Slack</h1>
+          <img class="tutorial-hero-image" src="/assets/tutorial-videocalls.png" alt="Video call tutorial with phone camera and virtual camera">
+          <ol class="guide-list">
+            <li>Open the camera in OBS using a Browser Source.</li>
+            <li>Start OBS Virtual Camera.</li>
+            <li>In Discord or Slack call settings, select OBS Virtual Camera.</li>
+            <li>When you create a new LCLCam connection, update the Browser Source URL in OBS.</li>
+          </ol>
+        </div>
+      </section>
+
+      <footer class="site-footer dashboard-footer">
+        <div>
+          <a class="footer-logo footer-logo-image" href="/" aria-label="LCLCam home"><img src="/assets/lclcam-logo.png" alt="LCLCam"></a>
+          <a href="/" class="footer-link">Local Studio</a>
+          <p>Stream your phone camera through a local connection on any device.</p>
+        </div>
+        <div class="footer-open-source">
+          <strong>Open source</strong>
+          <a href="https://github.com/gd-moarph/lclcam" class="footer-link" target="_blank" rel="noreferrer">Github: https://github.com/gd-moarph/lclcam</a>
+          <span>&copy; gdmoarph <span data-current-year-range>2026</span></span>
+        </div>
+      </footer>
+    </main>
+
+    <dialog id="qrModal" class="modal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Pair phone</p>
+            <h2>Scan this QR code</h2>
+          </div>
+          <button id="closeQrModal" class="secondary" type="button">Close</button>
+        </div>
+        <div class="qr-frame">
+          <img id="qrCode" alt="Phone pairing QR code">
+        </div>
+        <a id="phoneLink" href="#" target="_blank" rel="noreferrer">Open phone link</a>
+        <p id="expiresText" class="hint"></p>
+      </div>
+    </dialog>
+
+    <dialog id="guideModal" class="modal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Tutorial</p>
+            <h2 id="guideTitle">How to connect</h2>
+          </div>
+          <button id="closeGuideModal" class="secondary" type="button">Close</button>
+        </div>
+        <ol id="guideSteps" class="guide-list"></ol>
+      </div>
+    </dialog>
+
+    <dialog id="historyModal" class="modal wide-modal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">History</p>
+            <h2>Past sessions</h2>
+          </div>
+          <button id="closeHistoryModal" class="secondary" type="button">Close</button>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </dialog>
+
+    <dialog id="cameraSettingsModal" class="modal wide-modal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Camera output</p>
+            <h2 id="cameraSettingsTitle">Output controls</h2>
+          </div>
+          <button id="closeCameraSettingsModal" class="secondary" type="button">Close</button>
+        </div>
+        <div class="settings-grid">
+          <label>
+            Output shape
+            <select id="cameraOrientation">
+              <option value="portrait">Portrait 9:16</option>
+              <option value="landscape">Landscape 16:9</option>
+            </select>
+          </label>
+          <label>
+            Framing
+            <select id="cameraFit">
+              <option value="contain">Fit whole image</option>
+              <option value="cover">Fill frame</option>
+            </select>
+          </label>
+          <label>
+            Rotation
+            <select id="cameraRotation">
+              <option value="0">0 degrees</option>
+              <option value="90">90 degrees</option>
+              <option value="180">180 degrees</option>
+              <option value="270">270 degrees</option>
+            </select>
+          </label>
+        </div>
+        <div class="range-grid">
+          <label>Brightness <span id="brightnessValue">100%</span><input id="brightnessRange" type="range" min="50" max="150" step="1"></label>
+          <label>Contrast <span id="contrastValue">100%</span><input id="contrastRange" type="range" min="50" max="180" step="1"></label>
+          <label>Saturation <span id="saturationValue">100%</span><input id="saturationRange" type="range" min="0" max="200" step="1"></label>
+          <label>Black and white <span id="grayscaleValue">0%</span><input id="grayscaleRange" type="range" min="0" max="100" step="1"></label>
+        </div>
+        <div class="obs-url-panel">
+          <button id="copyObsUrlButton" type="button">Copy permanent OBS URL</button>
+          <button id="regenerateObsUrlButton" class="secondary" type="button">Regenerate OBS URL</button>
+        </div>
+        <div class="settings-note">
+          <p>Your permanent OBS URL stays the same when you change controls. OBS updates live while this camera is online.</p>
+          <p>Keep this URL private. Anyone with the permanent OBS URL can view this camera while it is online. Regenerate it immediately if it is shared or leaked.</p>
+        </div>
+      </div>
+    </dialog>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/viewer.js"></script>
+  </body>
+</html>
+
+
+
+
