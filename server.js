@@ -62,17 +62,7 @@ function isLoopbackHost(hostname) {
 }
 
 function publicUrl(req, pathname) {
-  if (PUBLIC_BASE_URL) {
-    const configuredUrl = new URL(pathname, PUBLIC_BASE_URL);
-    if (isLoopbackHost(configuredUrl.hostname)) {
-      const localHost = getLocalNetworkHost();
-      if (localHost) {
-        configuredUrl.hostname = localHost;
-        configuredUrl.port = String(PORT);
-      }
-    }
-    return configuredUrl.toString();
-  }
+  if (PUBLIC_BASE_URL) return new URL(pathname, PUBLIC_BASE_URL).toString();
   const protocol = req.get("x-forwarded-proto") || req.protocol;
   const requestHost = req.get("host");
   const hostWithoutPort = String(requestHost || "").split(":")[0];

@@ -40,22 +40,28 @@ LCLCam lets you scan a QR code with your phone and use that phone camera as a li
 - A phone browser
 - Both devices on the same network for the intended low-latency local use case
 
-## Run locally
+## Run locally with secure phone access
+
+The phone camera page must be opened from HTTPS. For the standalone app, run LCLCam locally and expose it through Cloudflare Tunnel.
+
+Terminal 1:
 
 ```bash
 npm install
 npm start
 ```
 
-Open:
+Terminal 2:
 
-```text
-http://localhost:3000
+```bash
+cloudflared tunnel --url http://localhost:3000
 ```
 
-When running locally, the QR code uses this computer's local network IP address instead of `localhost`, so your phone can reach the Studio from the same Wi-Fi network.
+Cloudflare Tunnel prints a temporary `https://...trycloudflare.com` URL. Open that HTTPS URL on your desktop, then create the QR code from there. The QR code will use the same HTTPS tunnel URL, so the phone browser can access the camera without certificate errors.
 
-For phone camera permissions, browsers may require a secure context. `localhost` works on the desktop, but some phones may refuse camera access on a plain local IP address. If that happens, deploy with HTTPS or use a trusted HTTPS tunnel.
+No Cloudflare account is required for temporary `trycloudflare.com` tunnels. The URL changes each time the tunnel restarts.
+
+Local-only HTTP at `http://localhost:3000` is still useful for desktop preview, but phone camera access will usually fail if the QR code opens `http://192.168.x.x` because mobile browsers block camera access on plain HTTP LAN addresses.
 
 ## Deploy to Railway or similar hosting
 

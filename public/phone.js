@@ -50,6 +50,13 @@ function setPhoneStatus(text) {
   phoneStatus.textContent = text;
 }
 
+function getCameraApi() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw new Error("Camera access is blocked because this page is not trusted yet. Open the QR link in the phone browser, accept the local HTTPS certificate if prompted, then reload and tap Start stream again.");
+  }
+  return navigator.mediaDevices;
+}
+
 function getDeviceName() {
   return deviceNameInput.value.trim() || "Phone camera";
 }
@@ -124,7 +131,7 @@ function isProfileDelivered(profile, settings, fps) {
 
 async function probeProfile(profileKey, fps) {
   const profile = qualityProfiles[profileKey];
-  const stream = await navigator.mediaDevices.getUserMedia({
+  const stream = await getCameraApi().getUserMedia({
     audio: false,
     video: {
       facingMode,
@@ -194,7 +201,7 @@ async function startCamera() {
   }
 
   localStorage.setItem("phonecamera-device-name", getDeviceName());
-  localStream = await navigator.mediaDevices.getUserMedia({
+  localStream = await getCameraApi().getUserMedia({
     audio: false,
     video: getVideoConstraints()
   });
@@ -409,4 +416,3 @@ fpsSelect.addEventListener("change", restartWithSelectedQuality);
 detectCapabilitiesButton.addEventListener("click", detectCameraCapabilities);
 
 connectSocket();
-
