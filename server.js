@@ -61,9 +61,13 @@ function isLoopbackHost(hostname) {
   return ["localhost", "127.0.0.1", "::1", "[::1]"].includes(String(hostname || "").toLowerCase());
 }
 
+function requestProtocol(req) {
+  return String(req.get("x-forwarded-proto") || req.protocol || "").split(",")[0].trim().toLowerCase();
+}
+
 function publicUrl(req, pathname) {
   if (PUBLIC_BASE_URL) return new URL(pathname, PUBLIC_BASE_URL).toString();
-  const protocol = req.get("x-forwarded-proto") || req.protocol;
+  const protocol = requestProtocol(req) || "http";
   const requestHost = req.get("host");
   const hostWithoutPort = String(requestHost || "").split(":")[0];
   if (isLoopbackHost(hostWithoutPort)) {
@@ -309,6 +313,19 @@ app.post("/api/saved-camera-obs-url", (req, res) => {
 app.post("/api/pairing", async (req, res, next) => {
   try {
     cleanPairings();
+    const hostWithoutPort = String(req.get("host") || "").split(":")[0];
+    const openedFromSecureUrl = requestProtocol(req) === "https";
+    const hasSecureConfiguredBase = PUBLIC_BASE_URL && new URL(PUBLIC_BASE_URL).protocol === "https:";
+    if (!openedFromSecureUrl && !hasSecureConfiguredBase) {
+      return res.status(400).json({
+        error: "Open LCLCam from the Cloudflare Tunnel HTTPS URL before creating a QR code. Phone browsers block camera access on plain local HTTP."
+      });
+    }
+    if (isLoopbackHost(hostWithoutPort) && !hasSecureConfiguredBase) {
+      return res.status(400).json({
+        error: "Open the generated https://...trycloudflare.com URL on your desktop first, then create the QR code from that page."
+      });
+    }
     const token = createPairing(LOCAL_USER_ID);
     const phoneUrl = publicUrl(req, `/phone.html?token=${encodeURIComponent(token)}`);
     const qrDataUrl = await QRCode.toDataURL(phoneUrl, { errorCorrectionLevel: "M", margin: 1, width: 360 });

@@ -52,7 +52,7 @@ function setPhoneStatus(text) {
 
 function getCameraApi() {
   if (!navigator.mediaDevices?.getUserMedia) {
-    throw new Error("Camera access is blocked because this page is not trusted yet. Open the QR link in the phone browser, accept the local HTTPS certificate if prompted, then reload and tap Start stream again.");
+    throw new Error("Camera access is blocked because this page is not opened from a trusted HTTPS browser page. Open LCLCam through the Cloudflare Tunnel HTTPS URL, create a new QR code there, then scan the new QR code.");
   }
   return navigator.mediaDevices;
 }
