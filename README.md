@@ -42,14 +42,49 @@ LCLCam lets you scan a QR code with your phone and use that phone camera as a li
 
 ## Run locally with secure phone access
 
-The phone camera page must be opened from HTTPS. For the standalone app, run LCLCam locally and expose it through Cloudflare Tunnel.
+The phone camera page must be opened from HTTPS. Local desktop HTTP is fine for preview, but mobile browsers usually block camera access on plain local-network HTTP addresses such as `http://192.168.x.x`.
+
+For local use, run LCLCam on your computer and expose it through Cloudflare Tunnel. Temporary `trycloudflare.com` tunnels do not require a Cloudflare account.
+
+### 1. Install app dependencies
+
+```bash
+npm install
+```
+
+### 2. Install Cloudflare Tunnel
+
+Windows:
+
+```powershell
+winget install --id Cloudflare.cloudflared
+```
+
+macOS:
+
+```bash
+brew install cloudflared
+```
+
+Linux:
+
+Install `cloudflared` using Cloudflare's package repository or direct binary for your distribution:
+
+```text
+https://developers.cloudflare.com/tunnel/downloads/
+```
+
+After installing, restart your terminal if the `cloudflared` command is not detected immediately.
+
+### 3. Start LCLCam
 
 Terminal 1:
 
 ```bash
-npm install
 npm start
 ```
+
+### 4. Start the secure tunnel
 
 Terminal 2:
 
@@ -57,22 +92,32 @@ Terminal 2:
 cloudflared tunnel --url http://localhost:3000
 ```
 
-Cloudflare Tunnel prints a temporary `https://...trycloudflare.com` URL. Open that HTTPS URL on your desktop, then create the QR code from there. The QR code will use the same HTTPS tunnel URL, so the phone browser can access the camera without certificate errors.
+Cloudflare Tunnel prints a temporary URL like:
 
-No Cloudflare account is required for temporary `trycloudflare.com` tunnels. The URL changes each time the tunnel restarts.
+```text
+https://example-random-name.trycloudflare.com
+```
 
-Local-only HTTP at `http://localhost:3000` is still useful for desktop preview, but phone camera access will usually fail if the QR code opens `http://192.168.x.x` because mobile browsers block camera access on plain HTTP LAN addresses.
+Open that HTTPS URL on your desktop, then create the QR code from there. The QR code will use the same HTTPS tunnel URL, so the phone browser can access the camera without certificate errors.
+
+The video stream is still WebRTC-based. The tunnel is mainly used to serve the app over HTTPS and handle pairing/signaling.
 
 ## Deploy to Railway or similar hosting
 
-Set:
+The local Cloudflare Tunnel steps are not needed when deploying to Railway or similar hosting.
+
+Railway can provide a free generated HTTPS domain, and you can also attach your own custom domain with SSL. As long as the app is opened from an HTTPS domain, the phone browser can request camera access normally.
+
+For hosted deployments, set:
 
 ```env
 PORT=3000
 PUBLIC_BASE_URL=https://your-domain.com
 ```
 
-Then deploy the Node app. No database or email service is required.
+Use the Railway-generated HTTPS URL or your custom HTTPS domain as `PUBLIC_BASE_URL`.
+
+No database or email service is required for this standalone version.
 
 If you deploy publicly, the Studio is open to anyone who can access the URL. For private personal use, run locally, restrict access at the network level, or place the app behind your own reverse proxy/auth layer.
 
