@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LCLCam.com - Phone Stream</title>
+    <meta name="description" content="Use Phone Camera on Desktop for Free">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body class="phone-page">
+    <main class="phone-shell">
+      <section class="phone-panel">
+        <p class="eyebrow">LCLCam</p>
+        <h1>Phone camera</h1>
+        <label>
+          Device name
+          <input id="deviceName" autocomplete="off" placeholder="iPhone 14">
+        </label>
+        <div class="phone-control-grid">
+          <label>
+            Quality
+            <select id="qualitySelect">
+              <option value="1080p">1080p</option>
+              <option value="4k">4K</option>
+              <option value="720p">720p</option>
+            </select>
+          </label>
+          <label>
+            Frame rate
+            <select id="fpsSelect">
+              <option value="30">30 FPS</option>
+              <option value="60">60 FPS</option>
+            </select>
+          </label>
+        </div>
+        <button id="detectCapabilitiesButton" class="secondary" type="button">Detect camera capabilities</button>
+        <p id="capabilityStatus" class="hint compact-hint">Run detection to show quality options verified on this phone browser. LCLCam will also show the actual stream resolution received.</p>
+        <button id="previewToggle" class="secondary" type="button">See preview</button>
+        <video id="localVideo" autoplay muted playsinline></video>
+        <div class="phone-actions">
+          <button id="startButton" type="button">Start stream</button>
+          <button id="endButton" class="secondary" type="button">End stream</button>
+          <button id="switchButton" class="secondary" type="button">Switch camera</button>
+        </div>
+        <p id="phoneStatus" class="hint">Ready to connect.</p>
+      </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/phone.js"></script>
+  </body>
+</html>
